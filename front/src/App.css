@@ -1,0 +1,255 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+}
+
+.btn-home{
+  color: white;
+  font-size: 1.5rem;
+  margin-top: 5px;
+  margin-left: 10%;
+}
+.btn-home:hover{
+ color: darkred;
+}
+
+.usuario-conected{
+
+  color: white;
+  margin-left: 5%;
+  margin-top: 1%;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+
+.bigOne{
+  display: grid;
+  grid-template-columns: 22vw 22vw 22vw 22vw;
+  grid-auto-rows:52vh;
+  grid-auto-flow: row;
+
+  justify-content: center;
+  
+}
+.smallOne{
+  width: 200px;
+  height: 200px;
+  background-color: green;
+  border: solid black 5px;
+
+}
+
+.tituloPeli{
+ 
+  color:black;
+
+}
+
+.contain-img{
+  height: 100%;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+ 
+
+}
+.imagen-grilla{
+  width: 80%;
+  height: 90%;
+  object-fit:cover;
+  object-position: center;
+  border-radius: 5%;
+ 
+
+}
+
+
+.btns-cambiar-pagina{
+
+  display:  flex;
+  justify-content: center;
+ 
+ 
+}
+
+
+
+.btn-pag{
+  color: white;
+  background-color: #242424;
+  padding:1%;
+  margin: 2%;
+}
+
+.btn-pag:hover{
+opacity: 0.8;
+}
+
+
+.content-formulario{
+  margin: 0 auto;
+  width: 40%;
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: solid;
+
+}
+
+.formulario{
+  display: flex;
+  flex-direction: column;
+  width: 20vw;
+}
+
+.btn-formulario{
+
+  margin-top:5%;
+}
+
+
+.header{
+  background-color: darkblue;
+  height: 100vh;
+  display: flex;
+}
+
+.img-header-content{
+
+  width: 100%;
+  background-color: aqua;
+
+}
+
+.img-header{
+ object-fit:cover;
+ object-position: center;
+ width: 100%;
+ height: 100%;
+
+}
+
+span{
+  text-decoration: underline;
+  font-weight: bolder;
+}
+
+.info-header{
+  display: flex;
+  background-color:#242424;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.item-header{
+
+  font-size: 1 rem;
+  color: white;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 1%;
+}
+
+
+
+.contenedor-favoritos{
+  height: 100vh;
+ 
+}
+.btn-add-favoritos{
+  margin-top: 5%;
+  padding: 1%;
+
+}
+
+.btn-add-favoritos:hover{
+  background-color: black;
+  color: white;
+}
+
+
+
+.titulo-bienvenida-favoritos{
+
+  font-size: 2rem;
+  font-weight: bolder;
+  margin-left: 5%;
+}
+
+.titulo-lista-favoritos{
+
+  font-size: 1.2rem;
+  font-weight: bolder;
+  text-decoration: underline;
+  margin: 1% 5%;
+}
+
+
+
+ul{
+  list-style: georgian;
+
+  
+}
+.item-favoritos{
+  
+  margin: 0.3% 5%;
+  list-style: square;
+  
+}
+.contenedor-btn{
+  display: flex;
+  justify-content: center;
+}
+
+
+.navbar{
+  width: 100vw;
+  height: 8vh;
+  background-color: #f8f9f9!important;
+  color:lightgray;
+  box-shadow: 1px 1px 1px 1px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  
+}
+
+
+.iconoNavbar{
+  height: 40px;
+ 
+   display: flex;
+  align-items: center;
+
+}
+
+.navbar a{
+  display: flex;
+  align-items: center;
+  margin-left: 2%;
+
+}
+
+.TemporaryDrawer{
+  display: flex;
+  align-items: center;
+  margin-right: 2%;
+
+}
