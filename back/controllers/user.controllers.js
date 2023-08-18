@@ -85,12 +85,19 @@ class UserControllers {
     const { email, password } = req.body;
     try {
       const user = await UserServices.login(email);
-      const validated = user.validatePassword(password);
+
+      if (!user) {
+        return res.status(400).json({errors:"Wrong credentials"})
+       
+      }
+      const validated =await user.validatePassword(password);
 
       if (!validated) {
-        throw new Error("Wrong credentials");
-        return;
+        return res.status(400).json({errors:"Wrong credentials"})
       }
+
+      console.log("user",user)
+      console.log("validated",validated)
 
       const payload = {
         name: user.name,

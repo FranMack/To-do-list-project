@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router";
@@ -45,25 +45,7 @@ function RegisterFormik() {
     setPassword("");
   };
 
-  /*const handleSubmit = (event) => {
-    event.preventDefault();
 
-    axios
-      .post("http://localhost:3000/api/user/register", {
-        name,
-        url_img,
-        lastname,
-        email,
-        password,
-        username
-      })
-      .then((res) => res.data)
-      .then(() => navigate("/login"))
-
-      .catch((error) => {
-        console.log(error);
-      });
-  };*/
 
   const singUpForm = useFormik({
     initialValues: {
@@ -115,6 +97,7 @@ function RegisterFormik() {
         .then((res) => res.data)
         .then(() => {
           toast.success("User created");
+          //alert("User Created")
           handleModal(true);
         })
 
@@ -138,7 +121,7 @@ function RegisterFormik() {
         sx={{
           boxShadow: "5px 5px 5px 5px",
           width: { xs: "100vw", md: "30vw" },
-          height: { xs: "90vh", md: "87vh" },
+          height: { md: "87vh" },
           margin: "0 auto",
           marginTop: { md: "1%" },
         }}
@@ -238,7 +221,7 @@ function RegisterFormik() {
                 <FormHelperText id="name-helper" sx={{ textAlign: "center" }}>
                   {singUpForm.touched.name && singUpForm.errors.name ? (
                     <p style={{ color: "red" }}>
-                      El nombre debe estar compuesto por letras
+                      {singUpForm.errors.name}
                     </p>
                   ) : (
                     "Name"
@@ -268,7 +251,7 @@ function RegisterFormik() {
                 >
                   {singUpForm.touched.lastname && singUpForm.errors.lastname ? (
                     <p style={{ color: "red" }}>
-                      El nombre debe estar compuesto por letras
+                      {singUpForm.errors.lastname }
                     </p>
                   ) : (
                     "Lasname"
@@ -295,7 +278,7 @@ function RegisterFormik() {
                 <FormHelperText id="email-helper" sx={{ textAlign: "center" }}>
                   {singUpForm.touched.username && singUpForm.errors.username ? (
                     <p style={{ color: "red" }}>
-                      El nombre de usuario debe estar compuesto por letras
+                      {singUpForm.errors.username}
                     </p>
                   ) : (
                     "Username"
@@ -322,7 +305,7 @@ function RegisterFormik() {
                 />
                 <FormHelperText id="email-helper" sx={{ textAlign: "center" }}>
                   {singUpForm.touched.email && singUpForm.errors.email ? (
-                    <p style={{ color: "red" }}>Email invalido </p>
+                    <p style={{ color: "red" }}>{singUpForm.errors.email} </p>
                   ) : (
                     "Email"
                   )}
@@ -349,9 +332,7 @@ function RegisterFormik() {
                   sx={{ textAlign: "center" }}
                 >
                   {singUpForm.touched.password && singUpForm.errors.password ? (
-                    <p style={{ color: "red" }}>
-                      {" "}
-                      Al menos 8 caracteres, un letra mayuscula y un simbolo{" "}
+                    <p style={{ color: "red" }}>{singUpForm.errors.password}
                     </p>
                   ) : (
                     "Password"

@@ -16,12 +16,15 @@ import {
 } from "@mui/material";
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import AddIcon from "@mui/icons-material/Add";
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useParams } from "react-router-dom";
 import { useTodosContext } from "../context/todos.context";
 import { useDispatch, useSelector } from "react-redux";
 import Navbar from "./navbar";
 import { orderByDate } from "../../utils.js/functions";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+
 
 function UserList() {
   const { todos, setTodos } = useTodosContext();
@@ -31,29 +34,19 @@ function UserList() {
 
   const username = user.username;
 
-  const handleTask = (element) => {
-    setTask(element.target.value);
-  };
 
-  const addTodo = (event) => {
-    event.preventDefault();
-    axios
-      .post(`http://localhost:3000/api/activities/create`, { task, username })
-      .then(() => setTask(""))
-      .then(() =>
-        axios
-          .get(`http://localhost:3000/api/activities/all/${username}`)
-          .then((res) => setTodos(orderByDate(res.data)))
-      )
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+ 
+
+  const listId=useParams().id;
+  const nameList=useParams().nameList;
+
+
+  
 
   useEffect(() => {
     if (username) {
       axios
-        .get(`http://localhost:3000/api/activities/all/${username}`)
+        .get(`http://localhost:3000/api/activities/all/${listId}`)
         .then((res) => setTodos(orderByDate(res.data)))
         .catch((error) => {
           console.log(error);
@@ -61,12 +54,42 @@ function UserList() {
     }
   }, [user]);
 
+  const singUpForm=useFormik({
+
+    initialValues:{
+      task:""
+    },
+    validationSchema: Yup.object({
+      task: Yup.string().required("Required field"),
+    }),
+
+    onSubmit:(values)=>{
+
+      axios
+      .post(`http://localhost:3000/api/activities/create`, { task:values.task, listId:listId })
+      .then(() => singUpForm.resetForm(""))
+      .then(() =>
+        axios
+          .get(`http://localhost:3000/api/activities/all/${listId}`)
+          .then((res) => setTodos(orderByDate(res.data)))
+      )
+      .catch((error) => {
+        console.log(error);
+      });
+
+
+    }
+  })
+
+
+  
+console.log("todo",todos)
   return (
     <>
       <Navbar />
       <Box
         component="form"
-        onSubmit={addTodo}
+        onSubmit={singUpForm.handleSubmit}
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -76,7 +99,7 @@ function UserList() {
           fontSize: "1.5rem",
         }}
       >
-        <h3 style={{ marginTop: "5%", fontWeight: "bolder" }}>LIST OF TASKS</h3>
+        <h3 style={{ marginTop: "5%", fontWeight: "bolder" }}>{nameList}</h3>
 
         <TodoList todos={todos} />
 
@@ -89,10 +112,12 @@ function UserList() {
         >
           <FormControl>
             <Input
-              onChange={handleTask}
-              value={task}
+            id="task"
+              onChange={singUpForm.handleChange}
+              onBlur={singUpForm.handleBlur}
+              value={singUpForm.values.task}
               type="text"
-              placeholder="Agregar tarea"
+              placeholder="Add a new task"
               sx={{
                 marginBottom: "5%",
                 textAlign: "center",
@@ -102,9 +127,16 @@ function UserList() {
                 },
               }}
             />
+            <FormHelperText id="task-helper" sx={{ textAlign: "center" }}>
+                {singUpForm.touched.task && singUpForm.errors.task ? (
+                  <p style={{ color: "red" }}>{singUpForm.errors.task}</p>
+                ) : (
+                  ""
+                )}
+              </FormHelperText>
           </FormControl>
-          <IconButton type="submit">
-            <AddIcon />
+          <IconButton type="submit" >
+            <AddCircleIcon fontSize="large" sx={{color:"#5893d4"}} />
           </IconButton>
         </Box>
       </Box>

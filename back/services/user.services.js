@@ -23,10 +23,7 @@ class UserServices {
   static async login(email) {
   
     const user = await Users.findOne({ where: { email: email } });
-    if (!user) {
-      throw new Error("Wrong credentials");
-      return;
-    }
+    
 
     return user;
   }

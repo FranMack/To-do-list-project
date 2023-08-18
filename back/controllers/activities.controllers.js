@@ -2,10 +2,13 @@ const ActivitiesServices = require("../services/activities.services");
 
 class ActivitiesControllers {
   static async createAactivity(req, res) {
-    const { username, task } = req.body;
+    const { task, listId } = req.body;
+
+    console.log("tareaaaaaaaaaaa",task)
+    console.log("iddddddddddddd",listId)
 
     try {
-      const activity = await ActivitiesServices.createAactivity(username,task);
+      const activity = await ActivitiesServices.createAactivity(listId,task);
 
       res.status(200).json(activity);
     } catch (error) {
@@ -14,9 +17,10 @@ class ActivitiesControllers {
   }
 
   static async getAllActivities(req,res){
-    const username=req.params.username
+    const listId=req.params.listId
+    console.log("llegooooooooooooooooooooooooooo 222222222")
     try{
-        const activities=await ActivitiesServices.getAllActivities(username)
+        const activities=await ActivitiesServices.getAllActivities(listId)
         res.status(200).json(activities)
 
     }

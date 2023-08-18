@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -16,8 +16,11 @@ import {
   FormHelperText,
   Button,
   Modal,
+  Alert
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 function ModalLogin({ handleModal, openModal }) {
   const navigate = useNavigate();
@@ -25,35 +28,60 @@ function ModalLogin({ handleModal, openModal }) {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+ 
 
-  const handleEmail = (event) => {
-    setEmail(event.target.value);
-  };
-  const handlePassword = (event) => {
-    setPassword(event.target.value);
-  };
+  useEffect(() => {
+    if (openModal) {
+      singUpForm.resetForm();
+    }
+    setErrorMessage("")
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  }, [openModal]);
 
-    axios
-      .post(
-        "http://localhost:3000/api/user/login",
-        { email, password },
-        { withCredentials: true }
-      )
-      .then((res) => {
-        dispatch(setUser(res.data.payload));
-        return res.data.payload.username;
-      })
-      .then((username) => {
-        toast.success("Iniciaste sesión");
-        navigate(`/user/${username}`);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+ 
+
+  const singUpForm = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().email("invalid email").required("email is required"),
+      password: Yup.string()
+        .min(8, "password minimum 8 characters")
+        .required("password is required"),
+    }),
+
+    onSubmit: (values) => {
+      axios
+        .post(
+          "http://localhost:3000/api/user/login",
+          { email:values.email, password:values.password },
+          { withCredentials: true }
+        )
+        .then((res) => {
+          dispatch(setUser(res.data.payload));
+
+          return res.data.payload.username;
+        })
+        .then((username) => {
+          navigate(`/user/${username}`);
+          toast.success("Iniciaste sesión");
+        })
+        .catch((error) => {
+
+          const capturedErrors=error.response.data.errors
+
+
+          setErrorMessage(capturedErrors)
+          toast.error(capturedErrors)
+          console.log(error);
+        });
+    },
+  });
+
+
 
   console.log("email", email);
   console.log("password", password);
@@ -66,10 +94,10 @@ function ModalLogin({ handleModal, openModal }) {
       >
         <Box
           component="form"
-          onSubmit={handleSubmit}
+          onSubmit={singUpForm.handleSubmit}
           sx={{
             width: "80%",
-            height: "40%",
+            height: "45%",
             backgroundColor: "white",
             borderRadius: "12px",
             display: "flex",
@@ -89,26 +117,43 @@ function ModalLogin({ handleModal, openModal }) {
                 id="email"
                 type="email"
                 aria-describedby="email-helper"
-                value={email}
-                onChange={handleEmail}
+                value={singUpForm.values.email}
+                onChange={singUpForm.handleChange}
+                onBlur={singUpForm.handleBlur}
               />
               <FormHelperText id="email-helper" sx={{ textAlign: "center" }}>
-                Email
+                {singUpForm.touched.email && singUpForm.errors.email ? (
+                  <p style={{ color: "red" }}>{singUpForm.errors.email}</p>
+                ) : (
+                  "Email"
+                )}
               </FormHelperText>
             </FormControl>
             <FormControl sx={{ width: "80%" }}>
               <Input
-                id="passsword"
+                id="password"
                 type="password"
                 aria-describedby="password-helper"
-                value={password}
-                onChange={handlePassword}
+                value={singUpForm.values.password}
+                onChange={singUpForm.handleChange}
+                onBlur={singUpForm.handleBlur}
               />
               <FormHelperText id="password-helper" sx={{ textAlign: "center" }}>
-                Password
+                {singUpForm.touched.password && singUpForm.errors.password ? (
+                  <p style={{ color: "red" }}>{singUpForm.errors.password}</p>
+                ) : (
+                  "Password"
+                )}
               </FormHelperText>
             </FormControl>
           </Stack>
+          {errorMessage && (
+            <Box sx={{ marginTop: 2 }}>
+              <Alert severity="error" variant="outlined">
+                {errorMessage}
+              </Alert>
+            </Box>
+          )}
           <Button
             type="submit"
             variant="contained"

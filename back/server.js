@@ -17,6 +17,8 @@ app.use(
     credentials: true, // Habilita el envio de cookies
   })
 );
+
+
 app.use(cookieParser());
 app.use(morgan("tiny"));
 app.use("/api", routes);

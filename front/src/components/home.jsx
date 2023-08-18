@@ -30,6 +30,7 @@ function Home() {
           alignItems: "center",
           height: "100vh",
           fontSize: "1.5rem",
+          
         }}
       >
         <Box

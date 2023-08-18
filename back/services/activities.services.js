@@ -1,32 +1,36 @@
 const Users = require("../models/Users");
 const Activities = require("../models/Activities");
+const Lists=require("../models/Lists")
 
 class ActivitiesServices {
-  static async createAactivity(username, task) {
+  static async createAactivity(listId,task) {
     try {
-      const user = await Users.findOne({ where: { username: username } });
-      if (!user) {
-        throw new Error("User not found");
+     
+      const list=await Lists.findByPk(listId);
+      if(!list){
+        throw new Error("List not found");
         return;
+
       }
+
       const activity = await Activities.create({ task: task });
-      activity.setAuthor(user.id);
+      activity.setList(list.id);
       return activity;
     } catch (error) {
       console.log(error);
     }
   }
 
-  static async getAllActivities(username) {
+  static async getAllActivities(listId) {
     try {
-      const user = await Users.findOne({ where: { username: username } });
-      if (!user) {
-        throw new Error("User not found");
+      const list=await Lists.findByPk(listId);
+      if (!list) {
+        throw new Error("List not found");
         return;
       }
 
       const activities = await Activities.findAll({
-        where: { authorId: user.id },
+        where: { listId: list.id },
       });
       return activities;
     } catch (error) {
