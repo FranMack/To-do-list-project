@@ -10,6 +10,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./index.css";
 import RegisterFormik from "./components/registerFormik";
+import Loading from "./components/loading";
 
 import "react-toastify/dist/ReactToastify.css";
 import { toast,ToastContainer } from "react-toastify";
@@ -27,7 +28,7 @@ console.log("ANTES DEL AXIOS")
       .get("http://localhost:3000/api/user/me",{ withCredentials: true })
       .then((res) =>res.data)
       .then((user) =>  {dispacth(setUser(user))
-        //navigate(`/user/${user.username}`)
+        navigate(`/user/${user.username}`)
       })
       .catch(({ error }) => {
         console.error(error)
@@ -46,6 +47,7 @@ console.log("ANTES DEL AXIOS")
         <Route path="/user/:username" element={<UserHome/>} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/lists/:nameList/:id" element={<UserList/>}/>
+        <Route path="/loading" element={<Loading/>}/>
       </Routes>
     </>
   );

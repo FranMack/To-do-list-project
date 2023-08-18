@@ -21,6 +21,7 @@ import Navbar from "./navbar";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
+import ModalImageTooLarge from "../commons/modalImageTooLarge";
 
 function Profile() {
   const user = useSelector((state) => state.user);
@@ -33,6 +34,11 @@ function Profile() {
   const [password, setPassword] = useState("");
   const [edit, setEdit] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const [showModal, setShowModal] = useState(false);
+
+  const handleCloseModal = () => {
+		setShowModal(false);
+	};
   
   const handleEdit = () => {
     setEdit(!edit);
@@ -40,6 +46,12 @@ function Profile() {
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
+    const maxSizeInBytes = 1024 * 60;
+
+    if (file && file.size > maxSizeInBytes) {
+			setShowModal(true);
+			return;
+		}
     const reader = new FileReader();
     reader.onload = () => {
       setUrl_img(reader.result);
@@ -124,7 +136,7 @@ function Profile() {
         })
         .then((res) => {
           dispatch(setUser(res.data))
-          //toast.success("ok")
+          toast.success("Changes saved successfully")
         })
         .then(() => {
           setEdit(true)
@@ -147,6 +159,7 @@ function Profile() {
   return (
     <>
       <Navbar />
+      <ModalImageTooLarge showModal={showModal} handleCloseModal={handleCloseModal}/>
       <Box sx={{boxShadow:"5px 5px 5px 5px",width:{ xs: "100vw", md: "30vw" },height:{ xs: "90vh", md: "87vh" }, margin:"0 auto", marginTop:{md:"1%"} }}>
       <Box
         component="form"
@@ -356,7 +369,7 @@ function Profile() {
           <Button
             onClick={handleEdit}
             variant="contained"
-            sx={{ marginTop: 4, marginBottom: 8 }}
+            sx={{ marginTop: 4, marginBottom: 8, backgroundColor:"#5893d4" }}
           >
             Edit
           </Button>

@@ -81,7 +81,7 @@ console.log("nameList",nameList)
         color: "black",
       }}
     >
-      <DeleteIcon onClick={deleteItem} sx={{"&:active":{color:"red"},cursor: "pointer" }} />
+      <DeleteIcon onClick={deleteItem} />
 
       <input
         readOnly={edit}

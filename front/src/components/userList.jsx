@@ -24,15 +24,19 @@ import Navbar from "./navbar";
 import { orderByDate } from "../../utils.js/functions";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import Loading from "./loading";
 
 
 function UserList() {
   const { todos, setTodos } = useTodosContext();
   const [task, setTask] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   const user = useSelector((state) => state.user);
 
   const username = user.username;
+
+  
 
 
  
@@ -47,7 +51,8 @@ function UserList() {
     if (username) {
       axios
         .get(`http://localhost:3000/api/activities/all/${listId}`)
-        .then((res) => setTodos(orderByDate(res.data)))
+        .then((res) => {setTodos(orderByDate(res.data))
+          setIsLoading(false)})
         .catch((error) => {
           console.log(error);
         });
@@ -85,7 +90,7 @@ function UserList() {
   
 console.log("todo",todos)
   return (
-    <>
+    isLoading ? (<Loading/>) :( <>
       <Navbar />
       <Box
         component="form"
@@ -140,7 +145,8 @@ console.log("todo",todos)
           </IconButton>
         </Box>
       </Box>
-    </>
+    </>)
+   
   );
 }
 

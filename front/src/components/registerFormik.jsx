@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import {
@@ -14,22 +13,33 @@ import {
   FormHelperText,
   Button,
   Alert,
+ 
 } from "@mui/material";
 
 import NavbarRegister from "./NavbarRegister";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import ModalLogin from "../commons/modalLogin";
+import ModalImageTooLarge from "../commons/modalImageTooLarge";
+
 
 function RegisterFormik() {
-  const navigate = useNavigate();
   const [url_img, setUrl_img] = useState("");
 
   const [errorMessage, setErrorMessage] = useState("");
-  // const [password, setPassword] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const handleCloseModal = () => {
+		setShowModal(false);
+	};
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
+    const maxSizeInBytes = 1024 * 60;
+
+    if (file && file.size > maxSizeInBytes) {
+			setShowModal(true);
+			return;
+		}
     const reader = new FileReader();
     reader.onload = () => {
       setUrl_img(reader.result);
@@ -97,7 +107,6 @@ function RegisterFormik() {
         .then((res) => res.data)
         .then(() => {
           toast.success("User created");
-          //alert("User Created")
           handleModal(true);
         })
 
@@ -117,6 +126,7 @@ function RegisterFormik() {
     <>
       <NavbarRegister />
       <ModalLogin openModal={openModal} handleModal={handleModal} />
+      <ModalImageTooLarge handleCloseModal={handleCloseModal} showModal={showModal}/>
       <Box
         sx={{
           boxShadow: "5px 5px 5px 5px",

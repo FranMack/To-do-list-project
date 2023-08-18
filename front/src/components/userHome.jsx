@@ -23,8 +23,11 @@ import ItemList from "../commons/itemList";
 import { useDispatch, useSelector } from "react-redux";
 import { orderByDate } from "../../utils.js/functions";
 import ModalNewList from "../commons/modalNewList";
+import Loading from "./loading";
+
 
 function UserHome() {
+  const [isLoading, setIsLoading] = useState(true);
   const [lists, setList] = useState([]);
 
   const handleLists = (list) => {
@@ -48,6 +51,7 @@ function UserHome() {
         .get(`http://localhost:3000/api/list/all/${email}`)
         .then((res) => {
           setList(orderByDate(res.data));
+          setIsLoading(false)
         })
         .catch((error) => {
           console.log(error);
@@ -58,7 +62,8 @@ function UserHome() {
   console.log("lists",lists)
 
   return (
-    <>
+    isLoading ? <Loading/> :(<>
+    
       <Navbar />
       <ModalNewList
         openModal={openModal}
@@ -115,7 +120,7 @@ function UserHome() {
             </Box>
             <ul
               style={{
-                width: "75%",
+                width: "80%",
                 marginTop: "3%",
                 display: "flex",
                 alignItems: "center",
@@ -136,7 +141,8 @@ function UserHome() {
           </>
         )}
       </Box>
-    </>
+    </>)
+    
   );
 }
 

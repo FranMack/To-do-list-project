@@ -14,8 +14,7 @@ function Home() {
 
   const handleModal = () => {
     setOpenModal(!openModal);
-    setEmail("");
-    setPassword("");
+  
   };
 
   return (
