@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+
 import { useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { setUser } from "../redux/user.slice";
+import { useSelector } from "react-redux/es/hooks/useSelector";
 
 import {
   Box,
@@ -23,6 +23,8 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 function ModalNewList({ handleModal, openModal, email, handleLists }) {
+
+  const theme=useSelector((state)=>state.theme)
   
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -37,8 +39,11 @@ function ModalNewList({ handleModal, openModal, email, handleLists }) {
       nameList: "",
     },
     validationSchema: Yup.object({
-      nameList: Yup.string().required("List name is required"),
+      nameList: Yup.string()
+      .required("List name is required")
+      .max(22, 'Maximum characters allowed 22')
     }),
+    
 
     onSubmit: (values) => {
       axios
@@ -70,9 +75,10 @@ function ModalNewList({ handleModal, openModal, email, handleLists }) {
           component="form"
           onSubmit={singUpForm.handleSubmit}
           sx={{
-            width: "80%",
+            width: {xs:"80%",md:"30%"},
             height: "35%",
-            backgroundColor: "white",
+            backgroundColor: `${theme.bgColor}`,
+           
             borderRadius: "12px",
             display: "flex",
             flexDirection: "column",
@@ -95,6 +101,8 @@ function ModalNewList({ handleModal, openModal, email, handleLists }) {
                 type="text"
                 placeholder="New List of tasks"
                 sx={{
+                  color:`${theme.textColor}`,
+                  borderBottom:`1px solid ${theme.textColor}`,
                   marginBottom: "5%",
                   textAlign: "center",
                   textAlign: "center",

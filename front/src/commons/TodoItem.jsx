@@ -1,17 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Button, List, Checkbox,TextField } from "@mui/material";
+import { List, Checkbox } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useParams } from "react-router-dom";
-import { useTodosContext } from "../context/todos.context";
+import { useDispatch,useSelector } from "react-redux";
+import { setTodos } from "../redux/todos.slice";
 import { orderByDate } from "../../utils.js/functions";
 
 function TodoItem({ todo }) {
   const username = useParams().username;
   const id = todo.id;
   const listId=todo.listId;
-  const { todos, setTodos } = useTodosContext();
-  const [checked, setChecked] = useState(todo.complete);
+  const dispatch=useDispatch()
+  const theme=useSelector((state)=>state.theme)
+  const [checked, setChecked] = useState(todo.complete );
+
+  useEffect(()=>{
+    setChecked(todo.complete)
+  },[todo])
 
   const deleteItem = () => {
     axios
@@ -19,7 +25,7 @@ function TodoItem({ todo }) {
       .then(() =>
         axios
         .get(`http://localhost:3000/api/activities/all/${listId}`)
-          .then((res) => setTodos(orderByDate(res.data)))
+          .then((res) => dispatch(setTodos(orderByDate(res.data))))
       )
       .catch((error) => {
         console.log(error);
@@ -34,7 +40,7 @@ function TodoItem({ todo }) {
       .then(() =>
       axios
       .get(`http://localhost:3000/api/activities/all/${listId}`)
-        .then((res) => setTodos(orderByDate(res.data)))
+        .then((res) =>  dispatch(setTodos(orderByDate(res.data))))
     )
       .then(() => setChecked(!checked))
       .catch((error) => {
@@ -54,16 +60,17 @@ function TodoItem({ todo }) {
         justifyContent: "space-between",
         alignItems: "center",
         fontSize: "1.3rem",
-        borderBottom: "solid 1px grey",
+        borderBottom: `solid 1px ${theme.textColor}`,
+        color:`${theme.textColor}`
       }}
     >
-      <DeleteIcon onClick={deleteItem} sx={{"&:active":{color:"red"},cursor: "pointer" }} />
+      <DeleteIcon onClick={deleteItem} sx={{"&:active":{color:"red"},cursor: "pointer"}} />
       {checked === false ? (
         <p>{todo.task}</p>
         ) : (
           <p style={{ textDecoration: "line-through" }}>{todo.task}</p>
           )}
-          <Checkbox onClick={taskCompleted} checked={checked} />
+          <Checkbox sx={{color:`${theme.textColor}`}} onClick={taskCompleted} checked={checked} />
 
     </List>
   );

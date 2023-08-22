@@ -240,7 +240,7 @@ ul{
 
 }
 
-.navbar a{
+nav a{
   display: flex;
   align-items: center;
   margin-left: 2%;
@@ -251,5 +251,6 @@ ul{
   display: flex;
   align-items: center;
   margin-right: 2%;
+  color:"red"
 
 }

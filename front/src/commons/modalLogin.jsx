@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { setUser } from "../redux/user.slice";
+import { setTheme } from "../redux/theme.slice";
 
 import {
   Box,
@@ -61,13 +62,35 @@ function ModalLogin({ handleModal, openModal }) {
           { withCredentials: true }
         )
         .then((res) => {
+          console.log("payload",res.data)
           dispatch(setUser(res.data.payload));
 
           return res.data.payload.username;
         })
         .then((username) => {
           navigate(`/user/${username}`);
-          toast.success("Iniciaste sesión");
+          toast.success("Login successful");
+        })
+        .then(()=>{
+          if(!window.localStorage.theme){
+
+            const objetoJSON = JSON.stringify({
+              bgColor: "white",
+              textColor: "gray",
+            });
+            window.localStorage.setItem("theme",objetoJSON)
+            
+            dispatch(
+              setTheme(JSON.parse(localStorage.getItem("theme")))
+            );
+            
+          }
+          else{
+            dispatch(
+              setTheme(JSON.parse(localStorage.getItem("theme")))
+            );
+
+          }
         })
         .catch((error) => {
 
@@ -96,7 +119,7 @@ function ModalLogin({ handleModal, openModal }) {
           component="form"
           onSubmit={singUpForm.handleSubmit}
           sx={{
-            width: "80%",
+            width: {xs:"80%",md:"30%"},
             height: "45%",
             backgroundColor: "white",
             borderRadius: "12px",

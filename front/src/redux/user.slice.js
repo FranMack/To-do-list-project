@@ -12,13 +12,13 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-     if (action.payload === null) {
+     /*if (action.payload === null) {
 				localStorage.removeItem('token');
 			} else {
 				if (action.payload.token) {
 					localStorage.setItem('token', action.payload.token);
 				}
-			}
+			}*/
 			return action.payload;
     },
   },

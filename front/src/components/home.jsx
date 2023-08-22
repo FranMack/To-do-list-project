@@ -1,8 +1,6 @@
 import React from "react";
 import Logo from "../commons/logo";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import ModalLogin from "../commons/modalLogin";

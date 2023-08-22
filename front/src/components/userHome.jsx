@@ -1,30 +1,15 @@
 import React, { useState } from "react";
-import { listas } from "../../utils.js/fajkeData";
 import Navbar from "./navbar";
 import { useEffect } from "react";
 import axios from "axios";
 
-import {
-  Box,
-  Grid,
-  Avatar,
-  Stack,
-  FormControl,
-  Input,
-  FormHelperText,
-  Button,
-  IconButton,
-  Icon,
-} from "@mui/material";
-
-import AddIcon from "@mui/icons-material/Add";
+import { Box, Button } from "@mui/material";
 
 import ItemList from "../commons/itemList";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { orderByDate } from "../../utils.js/functions";
 import ModalNewList from "../commons/modalNewList";
 import Loading from "./loading";
-
 
 function UserHome() {
   const [isLoading, setIsLoading] = useState(true);
@@ -42,8 +27,8 @@ function UserHome() {
 
   const user = useSelector((state) => state.user);
 
-  const username = user.username;
   const email = user.email;
+  const name = user.name;
 
   useEffect(() => {
     if (email) {
@@ -51,19 +36,22 @@ function UserHome() {
         .get(`http://localhost:3000/api/list/all/${email}`)
         .then((res) => {
           setList(orderByDate(res.data));
-          setIsLoading(false)
+          setIsLoading(false);
         })
         .catch((error) => {
           console.log(error);
         });
     }
   }, [user, openModal]);
-  
-  console.log("lists",lists)
 
-  return (
-    isLoading ? <Loading/> :(<>
-    
+  console.log("lists", lists);
+
+  const theme=useSelector((state)=>state.theme)
+
+  return isLoading ? (
+    <Loading />
+  ) : (
+    <>
       <Navbar />
       <ModalNewList
         openModal={openModal}
@@ -74,22 +62,31 @@ function UserHome() {
 
       <Box
         sx={{
+          margin:"0 auto",
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "start",
           alignItems: "center",
           fontSize: "1.7rem",
           flexDirection: "column",
+          minHeight: "92vh",
+          width:{xs:"100vw",md:"80vw"},
+          backgroundColor:`${theme.bgColor}`,
+          color:`${theme.textColor}`
+        
         }}
       >
-        <Box sx={{ marginTop: { xs: '10%', md: '5%' },}}>
-        <h3 style={{fontWeight: "bolder" }}>
-          {`WELLCOME: ${username}`}
-        </h3>
+        <Box sx={{ marginTop: { xs: "10%", md: "5%" } }}>
+          <h3 style={{ fontWeight: "bolder" }}>
+            WELLCOME:{" "}
+            <span
+              style={{ color: "#5893d4", textDecoration: "none" }}
+            >{`${name}`}</span>
+          </h3>
         </Box>
 
         <Box
           sx={{
-            marginTop: { xs: '10%', md: '3%' },
+            marginTop: { xs: "10%", md: "3%" },
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -107,16 +104,17 @@ function UserHome() {
 
         {lists.length > 0 && (
           <>
-          <Box sx={{ marginTop: { xs: '10%', md: '4%' },}}>
-            <h3
-              style={{
-                fontWeight: "bolder",
-                fontSize: "1.5rem",
-                textDecorationLine: "underline",
-              }}
-            >
-              YOUR LISTS
-            </h3>
+            <Box sx={{ marginTop: { xs: "10%", md: "4%" } }}>
+              <h3
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "1.5rem",
+                  textDecorationLine: "underline",
+                
+                }}
+              >
+                YOUR LISTS
+              </h3>
             </Box>
             <ul
               style={{
@@ -141,8 +139,7 @@ function UserHome() {
           </>
         )}
       </Box>
-    </>)
-    
+    </>
   );
 }
 

@@ -4,22 +4,17 @@ import { Link } from "react-router-dom";
 import TodoList from "./Todolist";
 import {
   Box,
-  Grid,
-  Avatar,
-  Stack,
+ 
   FormControl,
   Input,
   FormHelperText,
-  Button,
   IconButton,
-  Icon,
 } from "@mui/material";
 
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useParams } from "react-router-dom";
-import { useTodosContext } from "../context/todos.context";
 import { useDispatch, useSelector } from "react-redux";
+import { setTodos } from "../redux/todos.slice";
 import Navbar from "./navbar";
 import { orderByDate } from "../../utils.js/functions";
 import { useFormik } from "formik";
@@ -28,11 +23,13 @@ import Loading from "./loading";
 
 
 function UserList() {
-  const { todos, setTodos } = useTodosContext();
-  const [task, setTask] = useState("");
+  const dispatch=useDispatch()
+  //const [task, setTask] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   const user = useSelector((state) => state.user);
+  const todos=useSelector((state)=>state.todos)
+  const theme=useSelector((state)=>state.theme)
 
   const username = user.username;
 
@@ -51,7 +48,7 @@ function UserList() {
     if (username) {
       axios
         .get(`http://localhost:3000/api/activities/all/${listId}`)
-        .then((res) => {setTodos(orderByDate(res.data))
+        .then((res) => {dispatch(setTodos(orderByDate(res.data)))
           setIsLoading(false)})
         .catch((error) => {
           console.log(error);
@@ -65,7 +62,9 @@ function UserList() {
       task:""
     },
     validationSchema: Yup.object({
-      task: Yup.string().required("Required field"),
+      task: Yup.string()
+      .required("Required field")
+      .max(22, 'Maximum characters allowed 22')
     }),
 
     onSubmit:(values)=>{
@@ -76,7 +75,8 @@ function UserList() {
       .then(() =>
         axios
           .get(`http://localhost:3000/api/activities/all/${listId}`)
-          .then((res) => setTodos(orderByDate(res.data)))
+          .then((res) => dispatch(setTodos(orderByDate(res.data))))
+          
       )
       .catch((error) => {
         console.log(error);
@@ -88,7 +88,7 @@ function UserList() {
 
 
   
-console.log("todo",todos)
+console.log("errors",singUpForm.touched.task)
   return (
     isLoading ? (<Loading/>) :( <>
       <Navbar />
@@ -100,8 +100,10 @@ console.log("todo",todos)
           flexDirection: "column",
           justifyContent: "start",
           alignItems: "center",
-          height: "100vh",
+          minHeight:"92vh",
           fontSize: "1.5rem",
+          backgroundColor:`${theme.bgColor}`,
+          color:`${theme.textColor}`
         }}
       >
         <h3 style={{ marginTop: "5%", fontWeight: "bolder" }}>{nameList}</h3>
@@ -124,6 +126,9 @@ console.log("todo",todos)
               type="text"
               placeholder="Add a new task"
               sx={{
+                backgroundColor:`${theme.bgColor}`,
+                color:`${theme.textColor}`,
+                borderBottom: `solid 1px ${theme.textColor}`,
                 marginBottom: "5%",
                 textAlign: "center",
                 textAlign: "center",

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import {
@@ -11,10 +10,8 @@ import {
   Input,
   FormHelperText,
   Button,
-  IconButton
 } from "@mui/material";
 
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import NavbarRegister from "./NavbarRegister";
 
 function Registro() {

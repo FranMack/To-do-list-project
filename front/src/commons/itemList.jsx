@@ -8,9 +8,14 @@ import { useTodosContext } from "../context/todos.context";
 import { orderByDate } from "../../utils.js/functions";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { setUser } from "../redux/user.slice";
+import { useDispatch } from "react-redux";
 
 function ItemList({ lista, email, handleLists }) {
   const navigate = useNavigate();
+  const theme=useSelector((state)=>state.theme)
+  const dispatch=useDispatch()
 
   const [nameList, setNameList] = useState("");
   const handleNameList = (event) => {
@@ -48,7 +53,7 @@ function ItemList({ lista, email, handleLists }) {
 
   const handleLink = () => {
     if (edit) {
-      navigate(`/lists/${lista.nameList}/${lista.id}`);
+      navigate(`/lists/${ nameList || lista.nameList}/${lista.id}`);
     }
   };
 
@@ -59,7 +64,8 @@ function ItemList({ lista, email, handleLists }) {
           listId,
           nameList,
         })
-        .then((res) => console.log(res.data))
+        .then(() => {axios.get(`http://localhost:3000/api/list/all/${email}`)})
+        .then((res)=>{dispatch(setUser(res.data))})
         .catch((error) => {
           console.log(error);
         });
@@ -76,19 +82,23 @@ console.log("nameList",nameList)
         justifyContent: "space-between",
         alignItems: "center",
         fontSize: "1.3rem",
-        borderBottom: "solid 1px grey",
+        borderBottom: `solid 1px ${theme.textColor}`,
         marginTop: "2%",
-        color: "black",
+        color:`${theme.textColor}`,
+      
+        
       }}
     >
-      <DeleteIcon onClick={deleteItem} />
+      <DeleteIcon sx={{ "&:active":{color:"red"},cursor: "pointer"}} onClick={deleteItem} />
 
       <input
         readOnly={edit}
         style={{
           outline: "none",
           border: "none",
-          color: `${edit ? "black" : "#5893d4"}`,
+          color: `${edit ? theme.textColor : "#5893d4"}`,
+          backgroundColor:`${theme.bgColor}`,
+         
           fontSize: "1.3rem",
           textAlign: "center",
           "& input": {
@@ -102,7 +112,7 @@ console.log("nameList",nameList)
 
       <EditIcon
         onClick={handleEdit}
-        sx={{ color: `${edit ? "black" : "#5893d4"}` }}
+        sx={{ color: `${edit ? theme.textColor : "#5893d4"}` }}
       />
     </List>
   );

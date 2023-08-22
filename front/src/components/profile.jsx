@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
-import { useNavigate } from "react-router";
 import {
   Box,
   Grid,
@@ -14,7 +12,6 @@ import {
   Alert
 } from "@mui/material";
 
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "../redux/user.slice";
 import Navbar from "./navbar";
@@ -25,6 +22,7 @@ import ModalImageTooLarge from "../commons/modalImageTooLarge";
 
 function Profile() {
   const user = useSelector((state) => state.user);
+  const theme=useSelector((state)=>state.theme)
   const dispatch = useDispatch();
   const [url_img, setUrl_img] = useState("");
   const [name, setName] = useState("");
@@ -160,7 +158,7 @@ function Profile() {
     <>
       <Navbar />
       <ModalImageTooLarge showModal={showModal} handleCloseModal={handleCloseModal}/>
-      <Box sx={{boxShadow:"5px 5px 5px 5px",width:{ xs: "100vw", md: "30vw" },height:{ xs: "90vh", md: "87vh" }, margin:"0 auto", marginTop:{md:"1%"} }}>
+      <Box sx={{boxShadow:"5px 5px 5px 5px",width:{ xs: "100vw", md: "30vw" },height:{ xs: "92vh", md: "87vh" }, margin:"0 auto", marginTop:{md:"1%"},color:`${theme.textColor}`, }}>
       <Box
         component="form"
         onSubmit={singUpForm.handleSubmit}
@@ -172,6 +170,10 @@ function Profile() {
           height: "100%",
           width:"100%",
           fontSize: "1.5rem",
+          backgroundColor:`${theme.bgColor}`,
+          
+         
+        
           
         }}
       >
@@ -227,7 +229,7 @@ function Profile() {
           >
            <FormControl sx={{width: { xs: '50%', md: '50%' },}}>
               <Input
-                disabled={edit}
+                readOnly={edit}
                 id="name"
                 type="text"
                 aria-describedby="name-helper"
@@ -235,6 +237,8 @@ function Profile() {
                 onChange={singUpForm.handleChange}
                 onBlur={singUpForm.handleBlur}
                 sx={{textAlign: "center",
+                color:`${theme.textColor}`,
+                borderBottom:`1px solid ${theme.textColor}`,
                 "& input": {
                   textAlign: "center",
                 }}}
@@ -252,7 +256,7 @@ function Profile() {
 
             <FormControl sx={{width: { xs: '50%', md: '50%' },}}>
               <Input
-                disabled={edit}
+                readOnly={edit}
                 id="lastname"
                 type="text"
                 aria-describedby="lastname-helper"
@@ -260,6 +264,8 @@ function Profile() {
                 onChange={singUpForm.handleChange}
                 onBlur={singUpForm.handleBlur}
                 sx={{textAlign: "center",
+                color:`${theme.textColor}`,
+                borderBottom:`1px solid ${theme.textColor}`,
                 "& input": {
                   textAlign: "center",
                 }}}
@@ -277,7 +283,7 @@ function Profile() {
 
             <FormControl sx={{width: { xs: '50%', md: '50%' }}}>
               <Input
-                disabled={edit}
+                readOnly={edit}
                 id="username"
                 type="text"
                 aria-describedby="username-helper"
@@ -285,6 +291,8 @@ function Profile() {
                 onChange={singUpForm.handleChange}
                 onBlur={singUpForm.handleBlur}
                 sx={{textAlign: "center",
+                color:`${theme.textColor}`,
+                borderBottom:`1px solid ${theme.textColor}`,
                 "& input": {
                   textAlign: "center",
                 }}}
@@ -303,7 +311,7 @@ function Profile() {
 
             <FormControl sx={{width: { xs: '50%', md: '50%' },}}>
               <Input
-                disabled={true}
+                readOnly={edit}
                 id="email"
                 type="email"
                 aria-describedby="email-helper"
@@ -311,6 +319,8 @@ function Profile() {
                 onChange={singUpForm.handleChange}
                 onBlur={singUpForm.handleBlur}
                 sx={{textAlign: "center",
+                color:`${theme.textColor}`,
+                borderBottom:`1px solid ${theme.textColor}`,
                 "& input": {
                   textAlign: "center",
                 }}}
@@ -325,7 +335,7 @@ function Profile() {
             </FormControl>
             <FormControl sx={{width: { xs: '50%', md: '50%' }}}>
               <Input
-                disabled={edit}
+                readOnly={edit}
                 id="passsword"
                 type="password"
                 aria-describedby="password-helper"
@@ -333,6 +343,8 @@ function Profile() {
                 onChange={singUpForm.handleChange}
                 onBlur={singUpForm.handleBlur}
                 sx={{textAlign: "center",
+                color:`${theme.textColor}`,
+                borderBottom:`1px solid ${theme.textColor}`,
                 "& input": {
                   textAlign: "center",
                 }}}
