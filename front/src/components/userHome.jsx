@@ -77,7 +77,7 @@ function UserHome() {
       >
         <Box sx={{ marginTop: { xs: "10%", md: "5%" } }}>
           <h3 style={{ fontWeight: "bolder" }}>
-            WELLCOME:{" "}
+            WELCOME:{" "}
             <span
               style={{ color: "#5893d4", textDecoration: "none" }}
             >{`${name}`}</span>

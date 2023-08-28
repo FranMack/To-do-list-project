@@ -131,7 +131,6 @@ console.log("errors",singUpForm.touched.task)
                 borderBottom: `solid 1px ${theme.textColor}`,
                 marginBottom: "5%",
                 textAlign: "center",
-                textAlign: "center",
                 "& input": {
                   textAlign: "center",
                 },

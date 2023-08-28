@@ -13,7 +13,7 @@ require("dotenv").config();
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:5173", // URL del frontend
+    origin: "http://127.0.0.1:5173", // URL del frontend
     credentials: true, // Habilita el envio de cookies
   })
 );

@@ -209,6 +209,7 @@ function RegisterFormik() {
                 display: "flex",
                 alignItems: "center",
                 marginTop: { xs: "5%", md: "3%" },
+                fontSize:"2.5rem"
               }}
             >
               <FormControl sx={{ width: { xs: "50%", md: "50%" } }}>
